@@ -6,9 +6,6 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-  Platform
-} from 'react-native';
 
 import ReactNative from 'react-native';
 import * as firebase from 'firebase';
@@ -27,6 +24,7 @@ const {
   AlertIOS,
 } = ReactNative;
 
+//firebase parameters
 const firebaseConfig = {
   apiKey: "AIzaSyAHQpxSj9OFbhqz4Zonn5Zy8LzRBNPv1Zs",
   authDomain: "shoppinglistpro-80f0a.firebaseapp.com",
@@ -47,10 +45,6 @@ export default class ShoppingListApp extends Component {
     this.itemsRef = firebaseApp.database().ref();
   }
 
-  getRef() {
-    return firebaseApp.database().ref();
-  }
-
   listenForItems(itemsRef) {
     itemsRef.on('value', (snap) => {
 
@@ -69,9 +63,21 @@ export default class ShoppingListApp extends Component {
     });
   }
 
-  componentDidMount() {
-      this.listenForItems(this.itemsRef);
-   }
+  //Getting items with Firebase .push()
+  componentWillMount() {
+    this.listenForItems(this.itemsRef);
+  }
+
+  //Getting items with REST
+//  componentDidMount() {
+//    fetch('https://shoppinglistpro-80f0a.firebaseio.com')
+//      .then((response) => {
+//        return response.json()
+//      })
+//      .then((items) => {
+//        this.setState({ dataSource: this.state.dataSource.cloneWithRows(items) })
+//      })
+//  }
 
    _addItem() {
     AlertIOS.prompt(
@@ -108,20 +114,20 @@ export default class ShoppingListApp extends Component {
     }
 
    render() {
-    return (
-      <View style={styles.container}>
+      return (
+        <View style={styles.container}>
 
-        <StatusBar title="Shopping List" />
+          <StatusBar title="Shopping List" />
 
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this._renderItem.bind(this)}
-          enableEmptySections={true}
-          style={styles.listview}/>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this._renderItem.bind(this)}
+            enableEmptySections={true}
+            style={styles.listview}/>
 
-        <ActionButton onPress={this._addItem.bind(this)} title="Add"/>
+          <ActionButton onPress={this._addItem.bind(this)} title="Add"/>
 
-      </View>
-    )
+        </View>
+      )
   }
 }
