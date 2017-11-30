@@ -92,13 +92,13 @@ export default class ShoppingListApp extends Component {
 
    _renderItem(item) {
       const onPress = () => {
-        AlertIOS.prompt(
+        AlertIOS.alert(
           'Complete',
-          null,
+          'Are you sure you want to delete this item?',
           [
             {text: 'Complete', onPress: (text) => this.itemsRef.child(item._key).remove()},
             {text: 'Cancel', onPress: (text) => console.log('Cancel')}
-          ]
+          ],
         );
       };
 
